@@ -38,21 +38,12 @@ public class Main {
     }
 
     public static String readSignature(File f, int offset) throws IOException {
-        byte[] byteArray = new byte[16];
-        try (FileInputStream stream = new FileInputStream(f)) {
-
-            for (int i = 0; i < offset; i++) {
-                stream.read();
-            }
-            stream.read(byteArray, 0, 16);
-
-            StringBuilder result = new StringBuilder();
-            for (Byte b : byteArray) {
-                result.append(b).append(" ");
-            }
-
-            return result.toString();
+        StringBuilder str = new StringBuilder();
+        byte[] arr = Files.readAllBytes(f.toPath());
+        for(int i = offset; i < offset+16; i++){
+            str.append(arr[i]).append(" ");
         }
+        return str.toString();
     }
 
     public static List<String> searchFiles(File directory, String signature) throws IOException {
@@ -65,19 +56,14 @@ public class Main {
     }
 
     public static String readBytes(File f) {
-        List<Byte> byteList = new ArrayList<>();
+
         try (FileInputStream stream = new FileInputStream(f)) {
-
-            while (stream.available() != 0) {
-                byteList.add((byte) stream.read());
+            byte[] arr = Files.readAllBytes(f.toPath());
+            StringBuilder str = new StringBuilder();
+            for (Byte b : arr) {
+                str.append(b).append(" ");
             }
-
-            StringBuilder result = new StringBuilder();
-            for (Byte b : byteList) {
-                result.append(b).append(" ");
-            }
-
-            return result.toString();
+            return str.toString();
         } catch (FileNotFoundException e) {
             System.out.println("Файл не найден");
         } catch (IOException e) {
