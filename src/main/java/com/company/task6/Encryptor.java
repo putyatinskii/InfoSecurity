@@ -73,28 +73,28 @@ public class Encryptor {
         }
     }
 
-    private static void readDirectory(File directory, String curDirectory, StringBuilder dirString) throws IOException {
-        curDirectory = curDirectory + directory.getName() + "/";
-        if (!dirString.isEmpty()) {
-            dirString.append("NOT_EMP");
+    private static void readDirectory(File dir, String curDir, StringBuilder dirStr) throws IOException {
+        curDir = curDir + dir.getName() + "/";
+        if (!dirStr.isEmpty()) {
+            dirStr.append("NOT_EMP");
         }
 
-        for (String dirName : curDirectory.split("/")) {
-            dirString.append("FOLD").append(dirName).append("&");
+        for (String dirName : curDir.split("/")) {
+            dirStr.append("FOLD").append(dirName).append("&");
         }
 
-        File[] files = directory.listFiles();
+        File[] files = dir.listFiles();
 
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    dirString.append("FILE").append(file.getName()).append("&")
+                    dirStr.append("FILE").append(file.getName()).append("&")
                             .append(Files.readString(Paths.get(file.getAbsolutePath()))).append("&");
                 }
             }
             for (File file : files) {
                 if (file.isDirectory()) {
-                    readDirectory(file, curDirectory, dirString);
+                    readDirectory(file, curDir, dirStr);
                 }
             }
         }
